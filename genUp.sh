@@ -1,11 +1,13 @@
 #!/bin/bash
 
+VERSION='0.2'
+
 BOLD=`tput bold`
 RESET=`tput sgr0`
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 
-echo "genUp version 0.1"
+echo "genUp version ${VERSION}"
 
 currentOption=""
 lastOption=0
