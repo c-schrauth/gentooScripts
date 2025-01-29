@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION='0.2'
+VERSION='0.3'
 
 BOLD=`tput bold`
 RESET=`tput sgr0`
@@ -8,6 +8,12 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 
 echo "genUp version ${VERSION}"
+
+# Make sure only root can run our script
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
 
 currentOption=""
 lastOption=0
@@ -30,25 +36,25 @@ selectOption() {
 
 updatePortageTree() {
     echo -e "${GREEN}Updating the portage tree${RESET}"
-    sudo eix-sync
+    eix-sync
     echo -e "${GREEN}Done - Updating the portage tree${RESET}"
 }
 
 updateSystem() {
     echo -e "${GREEN}Updating the system${RESET}"
-    sudo emerge -avuND --with-bdeps=y @world
+    emerge -avuND --with-bdeps=y @world
     echo -e "${GREEN}Done - Updating the system${RESET}"
 }
 
 cleanSystem() {
     echo -e "${GREEN}Cleaning the system${RESET}"
-    sudo emerge -av --depclean
+    emerge -av --depclean
     echo -e "${GREEN}Done - Cleaning the system${RESET}"
 }
 
 cleanDistfiles() {
     echo -e "${GREEN}Cleaning the distfiles${RESET}"
-    sudo eclean-dist -d
+    eclean-dist -d
     echo -e "${GREEN}Done - Cleaning the distfiles${RESET}"
 }
 
